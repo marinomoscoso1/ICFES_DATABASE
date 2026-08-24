@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { DebateMessage } from './DebateMessage'
+import { Markdown } from './Markdown'
 import { ReviewSettingsPanel } from './ReviewSettingsPanel'
 import { VerdictCard } from './VerdictCard'
 import { readDocumentFile, TEXT_EXTENSIONS } from '../lib/documentFile'
@@ -201,17 +202,21 @@ export function Reviewer() {
                 {entry.text}
               </p>
             )
+          if (entry.kind === 'user')
+            return (
+              <p
+                key={entry.id}
+                className="self-end whitespace-pre-wrap rounded-lg border border-ink-700 bg-ink-800 px-4 py-2 text-sm text-zinc-200"
+              >
+                {entry.text}
+              </p>
+            )
           return (
-            <p
+            <Markdown
               key={entry.id}
-              className={
-                entry.kind === 'user'
-                  ? 'self-end rounded-lg border border-ink-700 bg-ink-800 px-4 py-2 text-sm text-zinc-200'
-                  : 'rounded-lg border border-ink-700 bg-ink-900 px-4 py-3 text-sm whitespace-pre-wrap text-zinc-300'
-              }
-            >
-              {entry.text}
-            </p>
+              className="rounded-lg border border-ink-700 bg-ink-900 px-4 py-3 text-sm text-zinc-300"
+              text={entry.text}
+            />
           )
         })}
         {busy ? <p className="text-sm text-zinc-600">Pensando…</p> : null}

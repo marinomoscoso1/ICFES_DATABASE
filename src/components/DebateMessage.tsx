@@ -1,3 +1,4 @@
+import { Markdown, MarkdownText } from './Markdown'
 import type { DebateTurn, Role } from '../lib/review'
 
 const roleLabel: Record<Role, string> = {
@@ -30,13 +31,15 @@ export function DebateMessage({ turn }: { turn: DebateTurn }) {
           · {Math.round(turn.confidence * 100)}%
         </p>
       </header>
-      <p className="text-sm text-zinc-200">{turn.summary}</p>
+      <Markdown className="text-sm text-zinc-200" text={turn.summary} />
       {turn.points.length > 0 ? (
         <ul className="space-y-1 text-sm text-zinc-400">
           {turn.points.map((point, index) => (
             <li key={index} className="flex gap-2">
               <span className="text-zinc-600">—</span>
-              <span>{point}</span>
+              <span>
+                <MarkdownText text={point} />
+              </span>
             </li>
           ))}
         </ul>

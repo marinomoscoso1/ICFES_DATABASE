@@ -1,3 +1,4 @@
+import { Markdown, MarkdownText } from './Markdown'
 import type { Verdict } from '../lib/review'
 
 function List({ title, items, tone }: { title: string; items: string[]; tone: string }) {
@@ -9,7 +10,9 @@ function List({ title, items, tone }: { title: string; items: string[]; tone: st
         {items.map((item, index) => (
           <li key={index} className="flex gap-2">
             <span className={tone}>•</span>
-            <span>{item}</span>
+            <span>
+              <MarkdownText text={item} />
+            </span>
           </li>
         ))}
       </ul>
@@ -38,7 +41,7 @@ export function VerdictCard({ verdict }: { verdict: Verdict }) {
           {verdict.rounds === 1 ? 'ronda' : 'rondas'}
         </p>
       </div>
-      <p className="text-sm text-zinc-200">{verdict.summary}</p>
+      <Markdown className="text-sm text-zinc-200" text={verdict.summary} />
       <div className="grid gap-4 sm:grid-cols-2">
         <List items={verdict.strengths} title="Fortalezas" tone="text-emerald-400" />
         <List items={verdict.issues} title="Problemas" tone="text-rose-400" />
