@@ -159,7 +159,7 @@ export function Reviewer() {
           />
         </label>
 
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <label className="btn cursor-pointer">
             Subir archivo
             <input
@@ -172,7 +172,7 @@ export function Reviewer() {
               }}
             />
           </label>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-3">
             <span className="text-xs text-zinc-600">{document.trim().length} caracteres</span>
             <button className="btn" disabled={busy} type="button" onClick={() => void startReview()}>
               {status === 'debating' ? 'Debatiendo…' : 'Revisar con tesis-antítesis'}

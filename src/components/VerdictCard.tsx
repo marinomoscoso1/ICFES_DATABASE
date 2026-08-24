@@ -23,17 +23,17 @@ export function VerdictCard({ verdict }: { verdict: Verdict }) {
     <section
       className={`space-y-4 rounded-lg border p-5 ${good ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-rose-500/40 bg-rose-500/5'}`}
     >
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div>
           <p className="text-[0.7rem] uppercase tracking-wider text-zinc-500">Veredicto</p>
-          <p className={`text-3xl font-light ${good ? 'text-emerald-300' : 'text-rose-300'}`}>
+          <p className={`whitespace-nowrap text-3xl font-light ${good ? 'text-emerald-300' : 'text-rose-300'}`}>
             {good ? 'Quedó bien' : 'Quedó mal'}
             {verdict.score === null ? null : (
               <span className="text-lg tabular-nums text-zinc-500"> · {verdict.score}/100</span>
             )}
           </p>
         </div>
-        <p className="text-right text-xs text-zinc-500">
+        <p className="text-xs text-zinc-500 sm:text-right">
           {verdict.agreed ? 'Consenso' : 'Sin consenso, decidió el juez'} tras {verdict.rounds}{' '}
           {verdict.rounds === 1 ? 'ronda' : 'rondas'}
         </p>

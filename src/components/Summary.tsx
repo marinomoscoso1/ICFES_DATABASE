@@ -45,15 +45,15 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
 export function Summary({ stats, maxScore, targetScore, weightGap }: SummaryProps) {
   return (
     <section className="space-y-5 rounded-lg border border-ink-700 bg-ink-900 p-5">
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div>
           <p className="text-[0.7rem] uppercase tracking-wider text-zinc-500">Nota acumulada</p>
-          <p className="text-4xl font-light tabular-nums text-zinc-50">
+          <p className="whitespace-nowrap text-4xl font-light tabular-nums text-zinc-50">
             {formatScore(stats.earned)}
             <span className="text-lg text-zinc-600"> / {formatScore(maxScore)}</span>
           </p>
         </div>
-        <p className={`max-w-[22rem] text-right text-sm ${tone[stats.status]}`}>
+        <p className={`text-sm sm:max-w-[22rem] sm:text-right ${tone[stats.status]}`}>
           {verdict(stats, maxScore, targetScore)}
         </p>
       </div>

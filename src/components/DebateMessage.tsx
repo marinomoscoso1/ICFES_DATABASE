@@ -20,9 +20,9 @@ const stanceTone: Record<DebateTurn['stance'], string> = {
 export function DebateMessage({ turn }: { turn: DebateTurn }) {
   return (
     <article className={`space-y-2 rounded-lg border p-4 ${roleTone[turn.role]}`}>
-      <header className="flex items-baseline justify-between gap-3">
+      <header className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
         <p className="text-[0.7rem] uppercase tracking-wider text-zinc-400">{roleLabel[turn.role]}</p>
-        <p className="text-[0.7rem] text-zinc-500">
+        <p className="whitespace-nowrap text-[0.7rem] text-zinc-500">
           ronda {turn.round} ·{' '}
           <span className={stanceTone[turn.stance]}>
             {turn.stance === 'bien' ? 'quedó bien' : 'quedó mal'}
