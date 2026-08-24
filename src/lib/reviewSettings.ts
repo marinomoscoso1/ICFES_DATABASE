@@ -12,14 +12,19 @@ export const SETTINGS_KEY = 'thesis-reviewer:v1'
 
 export const defaultSettings = (): ReviewSettings => ({
   apiKey: '',
-  thesisModel: 'llama-3.3-70b-versatile',
-  antithesisModel: 'openai/gpt-oss-20b',
-  judgeModel: 'llama-3.3-70b-versatile',
+  thesisModel: 'openai/gpt-oss-120b',
+  antithesisModel: 'qwen/qwen3.6-27b',
+  judgeModel: 'openai/gpt-oss-120b',
   maxRounds: DEFAULT_MAX_ROUNDS,
 })
 
+/** Models Groq retired: settings saved with them would only get 404s. */
+const RETIRED_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'qwen/qwen3-32b']
+
 const text = (value: unknown, fallback: string): string =>
-  typeof value === 'string' && value.trim().length > 0 ? value : fallback
+  typeof value === 'string' && value.trim().length > 0 && !RETIRED_MODELS.includes(value)
+    ? value
+    : fallback
 
 export function parseSettings(raw: string | null): ReviewSettings | null {
   if (!raw) return null

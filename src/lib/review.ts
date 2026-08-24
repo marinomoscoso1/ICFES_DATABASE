@@ -53,6 +53,10 @@ export interface ReviewInput {
 export const DEFAULT_MAX_ROUNDS = 3
 const MAX_DOCUMENT_CHARS = 24000
 
+/** Without this the debaters grade like a hostile professor and nothing ever passes. */
+const CALIBRATION =
+  'Calibración: "bien" significa que el trabajo cumple la consigna con calidad aceptable aunque tenga mejoras pendientes (equivale a 70/100 o más); "mal" se reserva para trabajos que incumplen la consigna o tienen fallas graves. No exijas perfección.'
+
 const JSON_SHAPE = `{"veredicto":"bien"|"mal","confianza":0-1,"resumen":"una frase","puntos":["argumento concreto citando el trabajo"]}`
 
 const debaterSystem = (role: Exclude<Role, 'sintesis'>): string => {
@@ -66,6 +70,7 @@ const debaterSystem = (role: Exclude<Role, 'sintesis'>): string => {
     'Defiende tu postura con evidencia concreta del texto (cita fragmentos cortos), no con generalidades.',
     'Sé honesto: si los argumentos del otro revisor son decisivos, cambia tu veredicto en lugar de insistir.',
     'Evalúa: cumplimiento de la consigna, exactitud del contenido, estructura, profundidad, citas y redacción.',
+    CALIBRATION,
     `Responde SOLO con JSON válido con esta forma: ${JSON_SHAPE}`,
     'Máximo 4 puntos, cada uno de una o dos frases, en español.',
   ].join(' ')
@@ -75,6 +80,8 @@ const judgeSystem = [
   'Eres el juez de un debate entre dos revisores sobre un taller o trabajo académico.',
   'Sintetiza el debate y entrega el veredicto final sobre si el trabajo quedó bien o mal.',
   'Si ambos revisores coincidieron, respeta ese consenso y explica por qué es sólido.',
+  CALIBRATION,
+  'El veredicto y el puntaje deben ser coherentes: puntaje >= 70 implica "bien".',
   'Responde SOLO con JSON válido con esta forma:',
   '{"veredicto":"bien"|"mal","puntaje":0-100,"resumen":"2 o 3 frases","fortalezas":["..."],"problemas":["..."],"acciones":["mejora accionable"]}',
   'Escribe en español, sin relleno.',

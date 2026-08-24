@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { GROQ_MODELS } from '../lib/groq'
 import type { ReviewSettings } from '../lib/reviewSettings'
 
@@ -29,8 +30,15 @@ function ModelField({
 }
 
 export function ReviewSettingsPanel({ settings, onChange }: ReviewSettingsPanelProps) {
+  // Uncontrolled after mount: closing it while the user types would swallow keystrokes.
+  const [open, setOpen] = useState(settings.apiKey === '')
+
   return (
-    <details className="rounded-lg border border-ink-700 bg-ink-900 p-4 text-sm" open={settings.apiKey === ''}>
+    <details
+      className="rounded-lg border border-ink-700 bg-ink-900 p-4 text-sm"
+      open={open}
+      onToggle={(event) => setOpen(event.currentTarget.open)}
+    >
       <summary className="cursor-pointer text-zinc-400">
         Configuración de Groq {settings.apiKey === '' ? '— falta la API key' : '— lista'}
       </summary>

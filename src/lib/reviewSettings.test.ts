@@ -8,6 +8,11 @@ describe('parseSettings', () => {
     expect(settings).toEqual({ ...defaultSettings(), apiKey: 'gsk', thesisModel: 'm', maxRounds: 6 })
   })
 
+  it('replaces models Groq retired with the current defaults', () => {
+    const settings = parseSettings(JSON.stringify({ thesisModel: 'llama-3.3-70b-versatile' }))
+    expect(settings?.thesisModel).toBe(defaultSettings().thesisModel)
+  })
+
   it('falls back to null on junk', () => {
     expect(parseSettings(null)).toBeNull()
     expect(parseSettings('not json')).toBeNull()

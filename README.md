@@ -34,7 +34,8 @@ así que se prueba con modelos falsos en `src/lib/review.test.ts`.
 Necesitas una API key gratuita de Groq (<https://console.groq.com/keys>). Se pega en el panel
 "Configuración de Groq" y se guarda solo en `localStorage`; las peticiones van del navegador directo a
 `api.groq.com`, sin backend. Puedes elegir un modelo distinto para tesis, antítesis y juez
-(`llama-3.3-70b-versatile`, `openai/gpt-oss-20b`, etc.).
+(`openai/gpt-oss-120b`, `qwen/qwen3.6-27b`, etc.); la lista de modelos vigentes de tu key está en
+<https://console.groq.com/docs/models>.
 
 El trabajo se pega en el textarea o se sube como archivo de texto (`.txt`, `.md`, `.tex`, código…).
 Los `.pdf`/`.docx` son binarios: hay que copiar el texto o exportarlos a texto plano.

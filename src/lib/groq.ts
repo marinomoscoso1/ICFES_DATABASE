@@ -18,11 +18,11 @@ export const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions'
 
 /** Free-tier Groq models that follow instructions well enough to debate. */
 export const GROQ_MODELS = [
-  'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant',
-  'openai/gpt-oss-20b',
   'openai/gpt-oss-120b',
-  'qwen/qwen3-32b',
+  'openai/gpt-oss-20b',
+  'qwen/qwen3.6-27b',
+  'groq/compound',
+  'groq/compound-mini',
 ] as const
 
 export class GroqError extends Error {
@@ -39,6 +39,7 @@ const errorMessage = (status: number, body: string): string => {
   if (status === 401) return 'La API key de Groq no es válida.'
   if (status === 429) return 'Groq está limitando las peticiones (rate limit). Espera unos segundos.'
   if (status === 413) return 'El documento es demasiado largo para este modelo.'
+  if (status === 404) return 'Ese modelo no existe o no está disponible para tu API key. Elige otro en la configuración.'
   return `Groq respondió ${status}: ${body.slice(0, 200)}`
 }
 
