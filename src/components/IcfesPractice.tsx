@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { GroqSettingsPanel } from './GroqSettingsPanel'
 import { QuestionCard } from './QuestionCard'
-import { GROQ_MODELS, groqChat } from '../lib/groq'
+import { groqChat } from '../lib/groq'
 import {
   AREAS,
   DIFFICULTIES,
@@ -10,7 +11,7 @@ import {
   generateTest,
   scoreTest,
 } from '../lib/icfes'
-import type { AreaId, Difficulty, Explanation, OptionId, Question } from '../lib/icfes'
+import type { AreaId, Explanation, OptionId, Question } from '../lib/icfes'
 import { loadIcfesSettings, saveIcfesSettings } from '../lib/icfesSettings'
 import type { IcfesSettings } from '../lib/icfesSettings'
 import { loadSettings, saveSettings } from '../lib/reviewSettings'
@@ -53,7 +54,6 @@ export function IcfesPractice() {
   const [explanations, setExplanations] = useState<Record<string, Explanation>>({})
   const [explaining, setExplaining] = useState<string | null>(null)
   const [generating, setGenerating] = useState(false)
-  const [settingsOpen, setSettingsOpen] = useState(groq.apiKey === '')
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -133,45 +133,7 @@ export function IcfesPractice() {
 
   return (
     <div className="flex flex-col gap-5">
-      <details
-        className="rounded-lg border border-ink-700 bg-ink-900 p-4 text-sm"
-        open={settingsOpen}
-        onToggle={(event) => setSettingsOpen(event.currentTarget.open)}
-      >
-        <summary className="cursor-pointer text-zinc-400">
-          Configuración de Groq {groq.apiKey === '' ? '— falta la API key' : '— lista'}
-        </summary>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <label className="grid gap-1">
-            <span className="px-1 text-[0.7rem] uppercase tracking-wider text-zinc-500">API key</span>
-            <input
-              autoComplete="off"
-              className="field font-mono"
-              placeholder="gsk_..."
-              type="password"
-              value={groq.apiKey}
-              onChange={(event) => patchGroq({ apiKey: event.target.value })}
-            />
-          </label>
-          <label className="grid gap-1">
-            <span className="px-1 text-[0.7rem] uppercase tracking-wider text-zinc-500">Modelo</span>
-            <input
-              className="field"
-              list="groq-models-icfes"
-              value={groq.judgeModel}
-              onChange={(event) => patchGroq({ judgeModel: event.target.value })}
-            />
-            <datalist id="groq-models-icfes">
-              {GROQ_MODELS.map((model) => (
-                <option key={model} value={model} />
-              ))}
-            </datalist>
-          </label>
-        </div>
-        <p className="mt-3 text-xs text-zinc-600">
-          Es la misma key del revisor: se guarda solo en este navegador.
-        </p>
-      </details>
+      <GroqSettingsPanel settings={groq} onChange={patchGroq} />
 
       <section className="grid gap-4 rounded-lg border border-ink-700 bg-ink-900 p-4">
         <div className="grid gap-2">
@@ -198,9 +160,7 @@ export function IcfesPractice() {
                 key={difficulty.id}
                 active={prefs.difficulty === difficulty.id}
                 label={difficulty.label}
-                onClick={() =>
-                  setPrefs((current) => ({ ...current, difficulty: difficulty.id as Difficulty }))
-                }
+                onClick={() => setPrefs((current) => ({ ...current, difficulty: difficulty.id }))}
               />
             ))}
           </div>

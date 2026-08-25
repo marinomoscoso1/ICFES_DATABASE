@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { DebateMessage } from './DebateMessage'
 import { Markdown } from './Markdown'
-import { ReviewSettingsPanel } from './ReviewSettingsPanel'
+import { GroqSettingsPanel } from './GroqSettingsPanel'
 import { VerdictCard } from './VerdictCard'
 import { readDocumentFile, TEXT_EXTENSIONS } from '../lib/documentFile'
 import { groqChat } from '../lib/groq'
@@ -130,7 +130,7 @@ export function Reviewer() {
 
   return (
     <div className="flex flex-col gap-5">
-      <ReviewSettingsPanel settings={settings} onChange={patchSettings} />
+      <GroqSettingsPanel debate settings={settings} onChange={patchSettings} />
 
       <section className="grid gap-3 rounded-lg border border-ink-700 bg-ink-900 p-4">
         <label className="grid gap-1">

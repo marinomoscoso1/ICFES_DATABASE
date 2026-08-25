@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { GROQ_MODELS } from '../lib/groq'
 import type { ReviewSettings } from '../lib/reviewSettings'
 
-interface ReviewSettingsPanelProps {
+interface GroqSettingsPanelProps {
   settings: ReviewSettings
   onChange: (patch: Partial<ReviewSettings>) => void
+  /** The reviewer needs a model per debater; the rest only use the judge model. */
+  debate?: boolean
 }
 
 function ModelField({
@@ -29,7 +31,7 @@ function ModelField({
   )
 }
 
-export function ReviewSettingsPanel({ settings, onChange }: ReviewSettingsPanelProps) {
+export function GroqSettingsPanel({ settings, onChange, debate = false }: GroqSettingsPanelProps) {
   // Uncontrolled after mount: closing it while the user types would swallow keystrokes.
   const [open, setOpen] = useState(settings.apiKey === '')
 
@@ -62,35 +64,43 @@ export function ReviewSettingsPanel({ settings, onChange }: ReviewSettingsPanelP
           />
         </label>
         <div className="grid gap-3 sm:grid-cols-3">
+          {debate ? (
+            <>
+              <ModelField
+                label="Modelo tesis"
+                value={settings.thesisModel}
+                onChange={(thesisModel) => onChange({ thesisModel })}
+              />
+              <ModelField
+                label="Modelo antítesis"
+                value={settings.antithesisModel}
+                onChange={(antithesisModel) => onChange({ antithesisModel })}
+              />
+            </>
+          ) : null}
           <ModelField
-            label="Modelo tesis"
-            value={settings.thesisModel}
-            onChange={(thesisModel) => onChange({ thesisModel })}
-          />
-          <ModelField
-            label="Modelo antítesis"
-            value={settings.antithesisModel}
-            onChange={(antithesisModel) => onChange({ antithesisModel })}
-          />
-          <ModelField
-            label="Modelo juez"
+            label={debate ? 'Modelo juez' : 'Modelo'}
             value={settings.judgeModel}
             onChange={(judgeModel) => onChange({ judgeModel })}
           />
         </div>
-        <label className="grid gap-1 sm:w-40">
-          <span className="px-1 text-[0.7rem] uppercase tracking-wider text-zinc-500">Rondas máximas</span>
-          <input
-            className="field text-right"
-            max={6}
-            min={1}
-            type="number"
-            value={settings.maxRounds}
-            onChange={(event) => onChange({ maxRounds: Number(event.target.value) })}
-          />
-        </label>
+        {debate ? (
+          <label className="grid gap-1 sm:w-40">
+            <span className="px-1 text-[0.7rem] uppercase tracking-wider text-zinc-500">
+              Rondas máximas
+            </span>
+            <input
+              className="field text-right"
+              max={6}
+              min={1}
+              type="number"
+              value={settings.maxRounds}
+              onChange={(event) => onChange({ maxRounds: Number(event.target.value) })}
+            />
+          </label>
+        ) : null}
         <p className="text-xs text-zinc-600">
-          La key se guarda solo en este navegador y viaja directo a{' '}
+          La key se guarda solo en este navegador (la misma para las dos secciones) y viaja directo a{' '}
           <a
             className="underline hover:text-zinc-400"
             href="https://console.groq.com/keys"

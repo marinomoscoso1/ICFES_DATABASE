@@ -19,7 +19,7 @@ export const TEXT_EXTENSIONS = [
 
 const MAX_BYTES = 2_000_000
 
-export const extensionOf = (name: string): string => {
+const extensionOf = (name: string): string => {
   const dot = name.lastIndexOf('.')
   return dot === -1 ? '' : name.slice(dot).toLowerCase()
 }
