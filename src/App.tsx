@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { GradeCalculator } from './components/GradeCalculator'
+import { IcfesPractice } from './components/IcfesPractice'
 import { Reviewer } from './components/Reviewer'
 
-type Mode = 'calculadora' | 'revisor'
+type Mode = 'calculadora' | 'revisor' | 'icfes'
 
 const tabs: { id: Mode; label: string; hint: string }[] = [
   {
@@ -14,6 +15,11 @@ const tabs: { id: Mode; label: string; hint: string }[] = [
     id: 'revisor',
     label: 'Revisor tesis-antítesis',
     hint: 'Dos modelos de Groq debaten tu taller hasta acordar si quedó bien o mal.',
+  },
+  {
+    id: 'icfes',
+    label: 'Práctica ICFES',
+    hint: 'Simulacros tipo Saber 11 por área y dificultad, con la cadena de pensamiento explicada.',
   },
 ]
 
@@ -44,7 +50,9 @@ export default function App() {
         <p className="text-xs text-zinc-600">{active.hint}</p>
       </header>
 
-      {mode === 'calculadora' ? <GradeCalculator /> : <Reviewer />}
+      {mode === 'calculadora' ? <GradeCalculator /> : null}
+      {mode === 'revisor' ? <Reviewer /> : null}
+      {mode === 'icfes' ? <IcfesPractice /> : null}
     </main>
   )
 }

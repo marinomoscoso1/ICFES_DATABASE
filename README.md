@@ -1,9 +1,10 @@
-# Calculadora de notas + Revisor tesis-antítesis
+# Calculadora de notas + Revisor tesis-antítesis + Práctica ICFES
 
-Dos herramientas para estudiantes en una misma app, elegibles con las pestañas de arriba:
+Tres herramientas para estudiantes en una misma app, elegibles con las pestañas de arriba:
 
 1. **Calculadora de notas** — cómo vas en una materia y qué necesitas en lo que falta.
 2. **Revisor tesis-antítesis** — dos LLMs de Groq debaten tu taller hasta acordar si quedó bien o mal.
+3. **Práctica ICFES** — simulacros tipo Saber 11 por área y dificultad, con la cadena de pensamiento explicada.
 
 ## Calculadora de notas
 
@@ -40,11 +41,31 @@ Necesitas una API key gratuita de Groq (<https://console.groq.com/keys>). Se peg
 El trabajo se pega en el textarea o se sube como archivo de texto (`.txt`, `.md`, `.tex`, código…).
 Los `.pdf`/`.docx` son binarios: hay que copiar el texto o exportarlos a texto plano.
 
+## Práctica ICFES
+
+Simulacros de Saber 11 generados con Groq:
+
+- **Áreas** (inglés queda fuera): lectura crítica, matemáticas, sociales y ciudadanas, y ciencias naturales
+  separadas en biología, química y física. Se pueden combinar varias en un mismo test.
+- **Dificultad** fácil / media / difícil, calibrada a los niveles de desempeño del ICFES.
+- **1 a 20 preguntas**, repartidas por turnos entre las áreas elegidas (una llamada por área, indicándole
+  al modelo los enunciados ya usados para que no se repita).
+- Cada ítem sigue el formato oficial: contexto o texto base, enunciado y cuatro opciones A-D con una sola
+  correcta; las preguntas mal formadas que devuelva el modelo se descartan.
+- Al responder se marca el acierto o el error y se habilita **"Explícame cómo debí pensarlo"**: un tutor
+  reconstruye la cadena de razonamiento paso a paso en el formato `Me dicen … → sé … → entonces …`, dice
+  la idea clave, en qué paso se rompe la opción que elegiste y qué recordar para preguntas parecidas.
+- La explicación solo aparece después de responder y de pedirla.
+
+Usa la misma API key de Groq del revisor. Las preferencias (áreas, dificultad, cantidad) se guardan en
+`localStorage`. La lógica está en `src/lib/icfes.ts` con el cliente de chat inyectado, probada sin red en
+`src/lib/icfes.test.ts`.
+
 ## Stack
 
 - Vite + React 19 + TypeScript
 - Tailwind CSS
-- Vitest para la lógica de notas y del debate
+- Vitest para la lógica de notas, del debate y del simulacro
 - oxlint
 
 ## Cómo correrlo
