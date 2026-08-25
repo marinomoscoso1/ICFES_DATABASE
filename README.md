@@ -38,6 +38,14 @@ Necesitas una API key gratuita de Groq (<https://console.groq.com/keys>). Se peg
 (`openai/gpt-oss-120b`, `qwen/qwen3.6-27b`, etc.); la lista de modelos vigentes de tu key está en
 <https://console.groq.com/docs/models>.
 
+#### Key en el despliegue
+
+Si defines el secret `GROQ_API_KEY` en el repositorio, el workflow de deploy la inyecta como
+`VITE_GROQ_API_KEY` y la app arranca con la key puesta: nadie tiene que pegarla. A cambio, la key queda
+dentro del bundle público, así que el sitio se protege con una contraseña (`src/lib/gate.ts`, se guarda
+solo el hash) que frena a curiosos pero no a alguien técnico: usa una key dedicada y rótala si abusan.
+Sin ese secret no hay contraseña y cada quien pone su propia key, como en local.
+
 El trabajo se pega en el textarea o se sube como archivo de texto (`.txt`, `.md`, `.tex`, código…).
 Los `.pdf`/`.docx` son binarios: hay que copiar el texto o exportarlos a texto plano.
 

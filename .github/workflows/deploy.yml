@@ -27,6 +27,10 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+        env:
+          # Baked into the bundle on purpose: the site is behind a password so
+          # visitors don't have to bring their own key. Rotate it if it leaks.
+          VITE_GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

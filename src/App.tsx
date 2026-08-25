@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { GradeCalculator } from './components/GradeCalculator'
 import { IcfesPractice } from './components/IcfesPractice'
+import { PasswordGate } from './components/PasswordGate'
 import { Reviewer } from './components/Reviewer'
+import { gateEnabled, isUnlocked } from './lib/gate'
 
 type Mode = 'calculadora' | 'revisor' | 'icfes'
 
@@ -25,7 +27,10 @@ const tabs: { id: Mode; label: string; hint: string }[] = [
 
 export default function App() {
   const [mode, setMode] = useState<Mode>('calculadora')
+  const [locked, setLocked] = useState(() => gateEnabled() && !isUnlocked())
   const active = tabs.find((tab) => tab.id === mode) ?? tabs[0]
+
+  if (locked) return <PasswordGate onUnlock={() => setLocked(false)} />
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-6 px-5 py-10 sm:py-16">

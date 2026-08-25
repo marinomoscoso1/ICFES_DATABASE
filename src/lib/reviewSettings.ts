@@ -1,3 +1,4 @@
+import { buildApiKey } from './gate'
 import { DEFAULT_MAX_ROUNDS } from './review'
 
 export interface ReviewSettings {
@@ -11,7 +12,8 @@ export interface ReviewSettings {
 export const SETTINGS_KEY = 'thesis-reviewer:v1'
 
 export const defaultSettings = (): ReviewSettings => ({
-  apiKey: '',
+  // Deployments can bake a key in at build time so nobody has to paste one.
+  apiKey: buildApiKey(),
   thesisModel: 'openai/gpt-oss-120b',
   antithesisModel: 'qwen/qwen3.6-27b',
   judgeModel: 'openai/gpt-oss-120b',
@@ -35,7 +37,7 @@ export function parseSettings(raw: string | null): ReviewSettings | null {
     const fallback = defaultSettings()
     const rounds = Number(record.maxRounds)
     return {
-      apiKey: text(record.apiKey, ''),
+      apiKey: text(record.apiKey, fallback.apiKey),
       thesisModel: text(record.thesisModel, fallback.thesisModel),
       antithesisModel: text(record.antithesisModel, fallback.antithesisModel),
       judgeModel: text(record.judgeModel, fallback.judgeModel),
